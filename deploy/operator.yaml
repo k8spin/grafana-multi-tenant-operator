@@ -1,0 +1,32 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana-multi-tenant-operator
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      application: grafana-multi-tenant-operator
+  template:
+    metadata:
+      labels:
+        application: grafana-multi-tenant-operator
+    spec:
+      serviceAccountName: grafana-multi-tenant-operator
+      containers:
+      - name: grafana-multi-tenant-operator
+        image: k8spin/grafana-multi-tenant-operator:v0.0.0
+        imagePullPolicy: Always
+        command: ["/bin/bash"]
+        args: ["-c", "kopf run /src/handler.py --verbose --namespace=${NAMESPACE}"]
+        envFrom:
+        - secretRef:
+            name: grafana-multi-tenant-operator
+        env:
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace

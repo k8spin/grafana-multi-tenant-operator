@@ -1,0 +1,6 @@
+apiVersion: grafana.k8spin.cloud/v1
+kind: User
+metadata:
+  name: jhon-doe
+spec:
+  email: jhon-doe@example.com

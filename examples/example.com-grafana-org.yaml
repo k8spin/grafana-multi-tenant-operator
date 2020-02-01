@@ -1,0 +1,5 @@
+apiVersion: grafana.k8spin.cloud/v1
+kind: Organization
+metadata:
+  name: example.com
+spec: {}
