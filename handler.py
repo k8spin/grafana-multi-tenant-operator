@@ -9,7 +9,8 @@ from grafana import api, organization, user
 def create_organization(spec, meta, **kwargs):
     name = meta.get('name')
     dataSources = spec.get('dataSources', list())
-    return organization.create(api, name, dataSources)
+    dashboards = spec.get('dashboards', list())
+    return organization.create(api, name, dataSources, dashboards)
 
 
 @kopf.on.update('grafana.k8spin.cloud', 'v1', 'organizations')
@@ -17,7 +18,10 @@ def update_organization(old, new, status, **kwargs):
     orgId = status['create_organization']['orgId']
     oldDataSources = old.get('spec').get('dataSources', list())
     newDataSources = new.get('spec').get('dataSources', list())
-    organization.update(api, orgId, oldDataSources, newDataSources)
+    oldDashboards = old.get('spec').get('dashboards', list())
+    newDashboards = new.get('spec').get('dashboards', list())
+    organization.update(api, orgId, oldDataSources,
+                        newDataSources, oldDashboards, newDashboards)
 
 
 @kopf.on.delete('grafana.k8spin.cloud', 'v1', 'organizations')
