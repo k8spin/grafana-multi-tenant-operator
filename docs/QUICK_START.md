@@ -96,7 +96,7 @@ metadata:
   namespace: default
 spec:
   dataSources:
-  - ds: |
+  - data: |
       {
         "name": "Prometheus",
         "type": "prometheus",
