@@ -15,6 +15,36 @@ spec:
           properties:
             spec:
               type: object
+              properties:
+                datasources:
+                  description: User's email to access Grafana
+                  type: array
+                  items:
+                    type: object
+                    required: [name, data]
+                    properties:
+                      name:
+                        type: string
+                      data:
+                        type: string
+                dashboards:
+                  description: Organizations where the user belongs
+                  type: array
+                  items:
+                    type: object
+                    required: [name, data]
+                    properties:
+                      name:
+                        type: string
+                      data:
+                        type: string
+      additionalPrinterColumns:
+      - jsonPath: .spec.datasources[*].name
+        name: Datasources
+        type: string
+      - jsonPath: .spec.dashboards[*].name
+        name: Dashboards
+        type: string  
   names:
     kind: Organization
     plural: organizations
