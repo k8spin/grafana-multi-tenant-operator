@@ -17,7 +17,7 @@ spec:
               type: object
               properties:
                 datasources:
-                  description: User's email to access Grafana
+                  description: Grafana datasources
                   type: array
                   items:
                     type: object
@@ -28,7 +28,7 @@ spec:
                       data:
                         type: string
                 dashboards:
-                  description: Organizations where the user belongs
+                  description: Grafana dashboards
                   type: array
                   items:
                     type: object
