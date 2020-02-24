@@ -50,7 +50,7 @@ gitlab_unstable:
     REGISTRY_USER: ${CI_REGISTRY_USER}
     REGISTRY_PASSWORD: ${CI_REGISTRY_PASSWORD}
     CONTAINER_IMAGE_NAME: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA}
-    KANIKO_EXTRA_ARG: ""
+    KANIKO_EXTRA_ARG: "--verbosity debug"
   except:
     - /^v([0-9]+)\.([0-9]+)\.([0-9]+)-rc([0-9]+)$/
     - /^v([0-9]+)\.([0-9]+)\.([0-9]+)$/
