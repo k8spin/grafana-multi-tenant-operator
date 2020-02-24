@@ -3,9 +3,9 @@ import json
 from grafana import MAIN_ORG_ID
 
 
-def create(api, name, dataSources, dashboards):
+def create(api, name, datasources, dashboards):
     response = api.organization.create_organization({'name': name})
-    _create_datasources(api, dataSources, response.get('orgId'))
+    _create_datasources(api, datasources, response.get('orgId'))
     _create_dashboards(api, dashboards, response.get('orgId'))
     return response
 
@@ -25,9 +25,9 @@ def find_by_name(api, name):
     return api.organization.find_organization(name)
 
 
-def _create_datasources(api, dataSources, orgId):
+def _create_datasources(api, datasources, orgId):
     api.organizations.switch_organization(orgId)
-    for dataSource in dataSources:
+    for dataSource in datasources:
         dataSourceName = dataSource.get('name')
         dataSourceParsed = json.loads(dataSource.get('data'))
         # Override the name
@@ -54,9 +54,9 @@ def _create_dashboards(api, dashboards, orgId):
     api.organizations.switch_organization(MAIN_ORG_ID)
 
 
-def _delete_datasources(api, dataSources, orgId):
+def _delete_datasources(api, datasources, orgId):
     api.organizations.switch_organization(orgId)
-    for dataSource in dataSources:
+    for dataSource in datasources:
         api.datasource.delete_datasource_by_name(dataSource.get('name'))
     api.organizations.switch_organization(MAIN_ORG_ID)
 
