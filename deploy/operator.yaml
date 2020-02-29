@@ -18,7 +18,7 @@ spec:
       serviceAccountName: grafana-multi-tenant-operator
       containers:
       - name: grafana-multi-tenant-operator
-        image: k8spin/grafana-multi-tenant-operator:v0.0.0
+        image: k8spin/grafana-multi-tenant-operator
         imagePullPolicy: Always
         command: ["/bin/bash"]
         args: ["-c", "kopf run /src/handler.py --verbose --namespace=${NAMESPACE}"]
