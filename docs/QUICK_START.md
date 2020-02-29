@@ -95,7 +95,7 @@ metadata:
   name: example.com
   namespace: default
 spec:
-  dataSources:
+  datasources:
   - data: |
       {
         "name": "Prometheus",
