@@ -86,7 +86,7 @@ github_release_candidate:
   stage: publish
   variables:
     GITHUB_RELEASE_IS_PRE_RELEASE: "true"
-    GITHUB_RELEASE_REPOSITORY_OWNER: "angelbarrera92"
+    GITHUB_RELEASE_REPOSITORY_OWNER: "k8spin"
     GITHUB_RELEASE_REPOSITORY_NAME: "grafana-multi-tenant-operator"
     GITHUB_RELEASE_TITLE: "Release candidate ${CI_COMMIT_TAG}"
     GITHUB_RELEASE_GITHUB_ACCESS_TOKEN: ${GITHUB_TOKEN}
@@ -99,7 +99,7 @@ github_release:
   stage: publish
   variables:
     GITHUB_RELEASE_IS_PRE_RELEASE: "false"
-    GITHUB_RELEASE_REPOSITORY_OWNER: "angelbarrera92"
+    GITHUB_RELEASE_REPOSITORY_OWNER: "k8spin"
     GITHUB_RELEASE_REPOSITORY_NAME: "grafana-multi-tenant-operator"
     GITHUB_RELEASE_TITLE: "Release ${CI_COMMIT_TAG}"
     GITHUB_RELEASE_GITHUB_ACCESS_TOKEN: ${GITHUB_TOKEN}
