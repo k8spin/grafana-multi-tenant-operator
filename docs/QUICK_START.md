@@ -7,7 +7,6 @@ and creating a Grafana Organization with an associated User.
 
 - [Grafana instance](https://github.com/grafana/grafana).
     - Admin user *(basic auth)* credentials.
-- [Docker](https://www.docker.com/)
 - Access to a [Kubernetes Cluster](https://github.com/kubernetes/kubernetes)
     - [kubectl](https://github.com/kubernetes/kubectl)
 
