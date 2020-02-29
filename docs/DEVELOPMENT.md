@@ -3,7 +3,7 @@
 ## Setting up python local development environment
 
 ```bash
-$ git clone git@github.com:angelbarrera92/grafana-multi-tenant-operator.git
+$ git clone git@github.com:k8spin/grafana-multi-tenant-operator.git
 Cloning into 'grafana-multi-tenant-operator'...
 remote: Enumerating objects: 85, done.
 remote: Counting objects: 100% (85/85), done.
