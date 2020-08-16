@@ -1,2 +1,2 @@
-grafana-api==0.9.3
+grafana-api==1.0.3
 kopf
