@@ -105,6 +105,39 @@ spec:
       }
     name: Prometheus
 ```
+Also if you are using another datasource like 'Cloudwatch'
+
+```bash
+$ kubectl edit org example.com
+organization.grafana.k8spin.cloud/example.com edited
+$ kubectl get org example.com -o yaml
+apiVersion: grafana.k8spin.cloud/v1
+kind: Organization
+metadata:
+  finalizers:
+  - kopf.zalando.org/KopfFinalizerMarker
+  name: example.com
+  namespace: default
+spec:
+  datasources:
+  - data: |
+      {
+        "name": "Cloudwatch",
+        "type": "cloudwatch",
+        "url": "http://monitoring.{{region}}.amazonaws.com",
+        "access": "proxy",
+        "jsonData": {
+          "authType": "default",
+          "assumeRoleArn": "arn:aws:iam::{{account}}:role/grafana-iam-role",
+          "defaultRegion": "{{region}}"
+        }
+      }
+    name: Cloudwatch
+```
+** Replace {{region}} according your configuration. You can find here [Amazon CloudWatch URL](https://docs.aws.amazon.com/general/latest/gr/cw_region.html) all endpoints. If you are using another "authType" for Cloudwatch or a different datasources you have more JSON examples here [Grafana Data source API](https://grafana.com/docs/grafana/latest/http_api/data_source/)
+
+
+
 
 Switch to the example.com organization and navigate to datasources:
 
