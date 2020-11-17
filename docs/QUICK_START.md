@@ -134,9 +134,7 @@ spec:
       }
     name: Cloudwatch
 ```
-** Replace {{region}} according your configuration. You can find here [Amazon CloudWatch URL](https://docs.aws.amazon.com/general/latest/gr/cw_region.html) all endpoints. If you are using another "authType" for Cloudwatch or a different datasources you have more JSON examples here [Grafana Data source API](https://grafana.com/docs/grafana/latest/http_api/data_source/)
-
-
+> Replace {{region}} according your configuration. You can find here [Amazon CloudWatch URL](https://docs.aws.amazon.com/general/latest/gr/cw_region.html) all endpoints. If you are using another "authType" for Cloudwatch or a different datasources you have more JSON examples here [Grafana Data source API](https://grafana.com/docs/grafana/latest/http_api/data_source/)
 
 
 Switch to the example.com organization and navigate to datasources:
