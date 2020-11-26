@@ -1,0 +1,55 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: users.grafana.k8spin.cloud
+spec:
+  scope: Namespaced
+  group: grafana.k8spin.cloud
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            apiVersion:
+              description: 'APIVersion defines the versioned schema of this representation
+                of an object. Servers should convert recognized schemas to the latest
+                internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+              type: string
+            kind:
+              description: 'Kind is a string value representing the REST resource this
+                object represents. Servers may infer this from the endpoint the client
+                submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+              type: string
+            status:
+              type: object
+              x-kubernetes-preserve-unknown-fields: true
+            spec:
+              type: object
+              required: [email]
+              properties:
+                email:
+                  description: User's email to access Grafana
+                  type: string
+                organizations:
+                  description: Organizations where the user belongs
+                  type: array
+                  items:
+                    type: string
+      additionalPrinterColumns:
+      - jsonPath: .spec.email
+        name: Email
+        type: string
+      - jsonPath: .spec.organizations
+        name: Organizations
+        type: string
+  names:
+    kind: User
+    plural: users
+    singular: user
+    shortNames:
+      - users
+      - user
