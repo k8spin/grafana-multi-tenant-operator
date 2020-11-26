@@ -10,6 +10,37 @@ and creating a Grafana Organization with an associated User.
 - Access to a [Kubernetes Cluster](https://github.com/kubernetes/kubernetes)
     - [kubectl](https://github.com/kubernetes/kubectl)
 
+# Deployment Options
+
+* [Using Helm](#deployment-with-helm)
+* [Using Manifests](#deployment-with-manifests)
+
+# Deployment with Helm
+
+> NOTE: You will need the Helm binary installed on your local environment to use this deployment method.
+
+You can use the Helm command-line tool to deploy the operator into your cluster. The CustomResourceDefinitions will be automatically
+deployed with the Helm chart.
+
+Before deploying the Grafana multi tenant operator, create a secret with the following variables:
+
+- `GRAFANA_MULTI_TENANT_OPERATOR_HOST`: [REQUIRED] Grafana endpoint. *Example: `grafana.monitoring.svc.cluster.local:3000`*
+- `GRAFANA_MULTI_TENANT_OPERATOR_ADMIN_USERNAME`: [OPTIONAL] Admin user. Default value: `admin`.
+- `GRAFANA_MULTI_TENANT_OPERATOR_ADMIN_PASSWORD`: [REQUIRED] Admin user password.
+
+```bash
+$ kubectl create secret generic grafana-multi-tenant-operator \
+    --from-literal=GRAFANA_MULTI_TENANT_OPERATOR_HOST=my_grafana_host \
+    --from-literal=GRAFANA_MULTI_TENANT_OPERATOR_ADMIN_USERNAME=admin \
+    --from-literal=GRAFANA_MULTI_TENANT_OPERATOR_ADMIN_PASSWORD=my_admin_password
+```
+
+Deploy the Helm chart:
+```
+$ helm install grafana-multi-tenant-operator deploy/chart/
+```
+
+## Deployment with Manifests
 
 Setup RBAC for the Grafana multi-tenant operator and its related resources:
 
@@ -56,6 +87,7 @@ $ kubectl get deployment
 NAME                            READY   UP-TO-DATE   AVAILABLE   AGE
 grafana-multi-tenant-operator   1/1     1            1           13h
 ```
+
 
 ## Create an example Organization
 

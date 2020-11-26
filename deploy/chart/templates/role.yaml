@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: Role
+metadata:
+  name: {{ include "grafana-multi-tenant-operator.fullname" . }}
+  labels:
+    {{- include "grafana-multi-tenant-operator.labels" . | nindent 4 }}
+rules:
+  - apiGroups: ["grafana.k8spin.cloud"]
+    resources: ["*"]
+    verbs: ["*"]
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["*"]

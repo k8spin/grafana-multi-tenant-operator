@@ -1,0 +1,12 @@
+You can now start managing Grafana organizations with the Grafana Multi-Tenant Operator.
+
+You can view your operator-managed organizations by using the following command:
+
+kubectl get organizations --namespace {{ .Release.Namespace }}
+
+To view users managed by the operator, use the following command:
+
+kubectl get users --namespace {{ .Release.Namespace }}
+
+For more information, please visit the operators' documentation on Github.
+https://github.com/k8spin/grafana-multi-tenant-operator
