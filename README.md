@@ -9,9 +9,9 @@ This operator provides basic but powerful capabilities to create Grafana Organiz
 Built with [kopf](https://github.com/zalando-incubator/kopf)
 
 
-## Quick start
+## Quickstart
 
-The [quick start](docs/QUICK_START.md) guide walks through the process of setting up RBAC, operator deployment
+The [quickstart](docs/QUICKSTART.md) guide walks through the process of setting up RBAC, operator deployment
 and creating a Grafana Organization with an associated User.
 
 
