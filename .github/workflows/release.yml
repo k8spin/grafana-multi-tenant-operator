@@ -5,8 +5,6 @@ on:
     tags:
       - "!v*-rc*" # Not in Release Candidates
       - "v*" # But in final releases
-    branches:
-      - "github-action"
 
 jobs:
   push_to_registry:
