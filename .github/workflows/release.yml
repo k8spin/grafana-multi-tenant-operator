@@ -37,4 +37,3 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           charts_dir: deploy/charts
           target_dir: charts
-          linting: off
