@@ -3,7 +3,7 @@ name: "Branch"
 on:
   push:
     branches:
-      - "github-action"
+      - "*"
 
 jobs:
   push_to_registry:
