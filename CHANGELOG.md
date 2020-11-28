@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## Vervion v1.1.0
 
 The second release does not add any functionality to the Operator, but it includes:
 
