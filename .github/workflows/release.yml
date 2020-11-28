@@ -30,7 +30,7 @@ jobs:
           pull: true
           no-cache: true
           push: true
-          tags: ghcr.io/${{ github.repository }}:${{ steps.get_version.outputs.version }}
+          tags: ghcr.io/${{ github.repository }}:${{ steps.get_version.outputs.version }},ghcr.io/${{ github.repository }}:latest
       - name: Publish Helm charts
         uses: stefanprodan/helm-gh-pages@master
         with:
