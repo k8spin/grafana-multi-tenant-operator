@@ -36,12 +36,12 @@ Successfully installed aiohttp-3.6.2 aiojobs-0.2.2 astroid-2.3.3 async-timeout-3
 
 ## Building
 
-Build the Grafana multi-tenant operator image and push it to a public registry such as dockerhub:
+Build the Grafana multi-tenant operator image and push it to a public registry such as `ghcr.io`:
 
 ```bash
 $ pwd
 grafana-multi-tenant-operator
-$ export IMAGE=k8spin/grafana-multi-tenant-operator:v0.0.0
+$ export IMAGE=ghcr.io/k8spin/grafana-multi-tenant-operator:v1.0.2
 $ docker build -t ${IMAGE} .
 $ docker push ${IMAGE}
 ```

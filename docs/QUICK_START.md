@@ -22,7 +22,7 @@ and creating a Grafana Organization with an associated User.
 You can use the Helm command-line tool to deploy the operator into your cluster. The CustomResourceDefinitions will be automatically
 deployed with the Helm chart.
 
-Before deploying the Grafana multi tenant operator, create a secret with the following variables:
+Before deploying the Grafana multi-tenant operator, create a secret with the following variables:
 
 - `GRAFANA_MULTI_TENANT_OPERATOR_HOST`: [REQUIRED] Grafana endpoint. *Example: `grafana.monitoring.svc.cluster.local:3000`*
 - `GRAFANA_MULTI_TENANT_OPERATOR_ADMIN_USERNAME`: [OPTIONAL] Admin user. Default value: `admin`.
@@ -36,7 +36,8 @@ $ kubectl create secret generic grafana-multi-tenant-operator \
 ```
 
 Deploy the Helm chart:
-```
+
+```bash
 $ helm install grafana-multi-tenant-operator deploy/charts/grafana-multi-tenant-operator
 ```
 
@@ -55,13 +56,13 @@ rolebinding.rbac.authorization.k8s.io/grafana-multi-tenant-operator created
 
 Deploy the Grafana multi-tenant CRDs:
 
-```
+```bash
 $ kubectl create -f deploy/crds.yaml
 customresourcedefinition.apiextensions.k8s.io/organizations.grafana.k8spin.cloud created
 customresourcedefinition.apiextensions.k8s.io/users.grafana.k8spin.cloud created
 ```
 
-Before deploying the Grafana multi tenant operator, create a secret with the following variables:
+Before deploying the Grafana multi-tenant operator, create a secret with the following variables:
 
 - `GRAFANA_MULTI_TENANT_OPERATOR_HOST`: [REQUIRED] Grafana endpoint. *Example: `grafana.monitoring.svc.cluster.local:3000`*
 - `GRAFANA_MULTI_TENANT_OPERATOR_ADMIN_USERNAME`: [OPTIONAL] Admin user. Default value: `admin`.
@@ -74,13 +75,13 @@ $ kubectl create secret generic grafana-multi-tenant-operator \
     --from-literal=GRAFANA_MULTI_TENANT_OPERATOR_ADMIN_PASSWORD=my_admin_password
 ```
 
-Deploy the Grafana multi tenant operator:
+Deploy the Grafana multi-tenant operator:
 
 ```bash
 $ kubectl create -f deploy/operator.yaml
 ```
 
-Verify that Grafana multi tenant operator is up and running:
+Verify that Grafana multi-tenant operator is up and running:
 
 ```bash
 $ kubectl get deployment
@@ -177,7 +178,7 @@ Switch to the example.com organization and navigate to datasources:
 
 ## Create an example User
 
-Create an User
+Create a User
 
 ```bash
 $ kubectl apply -f examples/example.com-grafana-user.yaml
