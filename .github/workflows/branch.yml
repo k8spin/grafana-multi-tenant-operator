@@ -27,3 +27,10 @@ jobs:
           no-cache: true
           push: true
           tags: ghcr.io/${{ github.repository }}:${{ github.sha }}
+      - name: Publish Helm charts
+        uses: stefanprodan/helm-gh-pages@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          charts_dir: deploy/chart
+          target_dir: charts
+          linting: off
