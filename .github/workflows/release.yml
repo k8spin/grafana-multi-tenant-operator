@@ -1,9 +1,10 @@
-name: "Branch"
+name: "Release"
 
 on:
   push:
-    branches:
-      - "github-action"
+    tags:
+      - "!v*-rc*" # Not in Release Candidates
+      - "v*" # But in final releases
 
 jobs:
   push_to_registry:
@@ -12,6 +13,9 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
+      - name: Get The Version
+        uses: battila7/get-version-action@v2
+        id: get_version
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
       - name: Login to ghcr.io
@@ -26,4 +30,4 @@ jobs:
           pull: true
           no-cache: true
           push: true
-          tags: ghcr.io/${{ github.repository }}:${{ github.sha }}
+          tags: ghcr.io/${{ github.repository }}:${{ steps.get_version.outputs.version }}
