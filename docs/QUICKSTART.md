@@ -40,7 +40,7 @@ Deploy the Helm chart:
 ```bash
 $ helm repo add grafana-multi-tenant-operator https://k8spin.github.io/grafana-multi-tenant-operator/charts --force-update
 "grafana-multi-tenant-operator" has been added to your repositories
-$ helm install grafana-multi-tenant-operator/grafana-multi-tenant-operator
+$ helm upgrade --install k8spin grafana-multi-tenant-operator/grafana-multi-tenant-operator
 ```
 
 or by:
