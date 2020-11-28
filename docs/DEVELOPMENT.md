@@ -41,7 +41,7 @@ Build the Grafana multi-tenant operator image and push it to a public registry s
 ```bash
 $ pwd
 grafana-multi-tenant-operator
-$ export IMAGE=ghcr.io/k8spin/grafana-multi-tenant-operator:v1.1.0-rc3
+$ export IMAGE=ghcr.io/k8spin/grafana-multi-tenant-operator:v1.1.0
 $ docker build -t ${IMAGE} .
 $ docker push ${IMAGE}
 ```
