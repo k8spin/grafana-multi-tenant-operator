@@ -2,9 +2,8 @@ name: "Release"
 
 on:
   push:
-    tags:
-      - "!v*-rc*" # Not in Release Candidates
-      - "v*" # But in final releases
+    tags-ignore:
+      - "v*-rc*"
 
 jobs:
   push_to_registry:
