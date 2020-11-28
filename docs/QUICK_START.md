@@ -1,6 +1,6 @@
 # Quick Start
 
-The quick start guide walks through the process of setting up RBAC, operator deployment 
+The quick start guide walks through the process of setting up RBAC, operator deployment
 and creating a Grafana Organization with an associated User.
 
 ## Prerequisites
@@ -36,6 +36,14 @@ $ kubectl create secret generic grafana-multi-tenant-operator \
 ```
 
 Deploy the Helm chart:
+
+```bash
+$ helm repo add grafana-multi-tenant-operator https://k8spin.github.io/grafana-multi-tenant-operator/charts --force-update
+"grafana-multi-tenant-operator" has been added to your repositories
+$ helm install grafana-multi-tenant-operator/grafana-multi-tenant-operator
+```
+
+or by:
 
 ```bash
 $ helm install grafana-multi-tenant-operator deploy/charts/grafana-multi-tenant-operator
