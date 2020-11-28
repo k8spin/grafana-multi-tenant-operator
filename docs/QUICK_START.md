@@ -37,7 +37,7 @@ $ kubectl create secret generic grafana-multi-tenant-operator \
 
 Deploy the Helm chart:
 ```
-$ helm install grafana-multi-tenant-operator deploy/chart/
+$ helm install grafana-multi-tenant-operator deploy/charts/grafana-multi-tenant-operator
 ```
 
 ## Deployment with Manifests
