@@ -6,9 +6,66 @@ on:
       - "v*-rc*"
 
 jobs:
+  e2e:
+    name: E2E Testing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Build Container Image
+        uses: docker/build-push-action@v2
+        with:
+          pull: true
+          no-cache: true
+          push: false
+          tags: ghcr.io/${{ github.repository }}:e2e
+          load: true
+
+      - name: Setup Kind
+        uses: engineerd/setup-kind@v0.5.0
+        with:
+          version: "v0.9.0"
+      - name: Load Container Image
+        run: kind load docker-image ghcr.io/${{ github.repository }}:e2e
+
+      - name: Install helm
+        uses: azure/setup-helm@v1
+        with:
+          version: "3.4.1"
+        id: helm_install
+      - name: Install Grafana Helm Repository
+        run: "${{ steps.helm_install.outputs.helm-path }} repo add grafana https://grafana.github.io/helm-charts --force-update"
+      - name: Update Helm Repositories
+        run: "${{ steps.helm_install.outputs.helm-path }} repo update"
+
+
+      - name: Setup Grafana
+        run: "${{ steps.helm_install.outputs.helm-path }} upgrade --install grafana --set adminPassword=admin grafana/grafana"
+      - name: Wait for Grafana
+        run: "kubectl wait --for=condition=available --timeout=600s deployment/grafana"
+
+      - name: Setup Grafana Multi-Tenant Operator (Configuration)
+        run: "kubectl create secret generic grafana-multi-tenant-operator --from-literal=GRAFANA_MULTI_TENANT_OPERATOR_HOST=grafana.default.svc.cluster.local --from-literal=GRAFANA_MULTI_TENANT_OPERATOR_ADMIN_USERNAME=admin --from-literal=GRAFANA_MULTI_TENANT_OPERATOR_ADMIN_PASSWORD=admin"
+      - name: Setup Grafana Multi-Tenant Operator
+        run: "${{ steps.helm_install.outputs.helm-path }} upgrade --install k8spin --set image.tag=e2e deploy/charts/grafana-multi-tenant-operator"
+      - name: Wait for Grafana Multi-Tenant Operator
+        run: "kubectl wait --for=condition=available --timeout=600s deployment/k8spin-grafana-multi-tenant-operator"
+
+      - name: "Deploy examples"
+        run: "kubectl apply -f examples/"
+
+      - name: "Run e2e tests"
+        run: "kubectl apply -f tests/e2e.yaml"
+      - name: "Verify e2e tests"
+        run: "kubectl wait --for=condition=complete --timeout=600s job/e2e"
+
   push_to_registry:
     name: Push Docker image to GitHub Packages
     runs-on: ubuntu-latest
+    needs: e2e
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
