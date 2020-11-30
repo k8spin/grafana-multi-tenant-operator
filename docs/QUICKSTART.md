@@ -25,6 +25,10 @@ deployed with the Helm chart.
 Before deploying the Grafana multi-tenant operator, create a secret with the following variables:
 
 - `GRAFANA_MULTI_TENANT_OPERATOR_HOST`: [REQUIRED] Grafana endpoint. *Example: `grafana.monitoring.svc.cluster.local:3000`*
+- `GRAFANA_MULTI_TENANT_OPERATOR_PORT`: [OPTIONAL] Grafana service port. *Defaults to port `80`.*
+- `GRAFANA_MULTI_TENANT_OPERATOR_PROTOCOL`: [OPTIONAL] Scheme to use. *Defaults to `http`.*
+- `GRAFANA_MULTI_TENANT_OPERATOR_VERIFY`: [OPTIONAL] SSL Verification check. *Defaults to `True`.*
+- `GRAFANA_MULTI_TENANT_OPERATOR_TIMEOUT`: [OPTIONAL] Timeout value. *Defaults to `5.0`.*
 - `GRAFANA_MULTI_TENANT_OPERATOR_ADMIN_USERNAME`: [OPTIONAL] Admin user. Default value: `admin`.
 - `GRAFANA_MULTI_TENANT_OPERATOR_ADMIN_PASSWORD`: [REQUIRED] Admin user password.
 
@@ -73,6 +77,10 @@ customresourcedefinition.apiextensions.k8s.io/users.grafana.k8spin.cloud created
 Before deploying the Grafana multi-tenant operator, create a secret with the following variables:
 
 - `GRAFANA_MULTI_TENANT_OPERATOR_HOST`: [REQUIRED] Grafana endpoint. *Example: `grafana.monitoring.svc.cluster.local:3000`*
+- `GRAFANA_MULTI_TENANT_OPERATOR_PORT`: [OPTIONAL] Grafana service port. *Defaults to port `80`.*
+- `GRAFANA_MULTI_TENANT_OPERATOR_PROTOCOL`: [OPTIONAL] Scheme to use. *Defaults to `http`.*
+- `GRAFANA_MULTI_TENANT_OPERATOR_VERIFY`: [OPTIONAL] SSL Verification check. *Defaults to `True`.*
+- `GRAFANA_MULTI_TENANT_OPERATOR_TIMEOUT`: [OPTIONAL] Timeout value. *Defaults to `5.0`.*
 - `GRAFANA_MULTI_TENANT_OPERATOR_ADMIN_USERNAME`: [OPTIONAL] Admin user. Default value: `admin`.
 - `GRAFANA_MULTI_TENANT_OPERATOR_ADMIN_PASSWORD`: [REQUIRED] Admin user password.
 
