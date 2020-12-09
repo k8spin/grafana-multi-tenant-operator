@@ -3,7 +3,7 @@ import json
 import asyncio
 import kopf
 
-from grafana import api, organization, user
+from grafana import api, organization, user, dashboard
 
 ORG_SWITCH_LOCK: asyncio.Lock
 
@@ -59,3 +59,27 @@ def update_user(status, spec, meta, old, new, **kwargs):
 @kopf.on.delete('grafana.k8spin.cloud', 'v1', 'users')
 def delete_user(status, **kwargs):
     return user.delete(api, status['create_user']['id'])
+
+
+@kopf.on.create('grafana.k8spin.cloud', 'v1', 'dashboards')
+def create_dashboard(spec, meta, **kwargs):
+    name = meta.get('name')
+    jsonDashboard = json.loads(spec.get('jsonDashboard'))
+    organizationNames = spec.get('organizations', list())
+    return dashboard.create(api, name, jsonDashboard, organizationNames)
+
+
+@kopf.on.update('grafana.k8spin.cloud', 'v1', 'dashboards')
+def update_dashboard(status, spec, meta, old, new, **kwargs):
+    name = meta.get('name')
+    oldOrganizationNames = old.get('spec').get('organizations', list())
+    newOrganizationNames = new.get('spec').get('organizations', list())
+    newJsonDashboard = json.loads(new.get('spec').get('jsonDashboard'))
+    return dashboard.update(api, name, oldOrganizationNames, newOrganizationNames, newJsonDashboard)
+
+
+@kopf.on.delete('grafana.k8spin.cloud', 'v1', 'dashboards')
+def delete_dashboard(spec, meta, **kwargs):
+    organizationNames = spec.get('organizations', list())
+    name = meta.get('name')
+    return dashboard.delete(api, name, organizationNames)
