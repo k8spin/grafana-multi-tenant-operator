@@ -1,27 +1,36 @@
 import json
 
+import asyncio
 import kopf
 
 from grafana import api, organization, user
 
+ORG_SWITCH_LOCK: asyncio.Lock
+
+
+@kopf.on.startup()
+async def startup_fn(logger, **kwargs):
+    global ORG_SWITCH_LOCK
+    ORG_SWITCH_LOCK = asyncio.Lock()  # uses the running asyncio loop by default
+
 
 @kopf.on.create('grafana.k8spin.cloud', 'v1', 'organizations')
-def create_organization(spec, meta, **kwargs):
+async def create_organization(spec, meta, **kwargs):
     name = meta.get('name')
     datasources = spec.get('datasources', list())
     dashboards = spec.get('dashboards', list())
-    return organization.create(api, name, datasources, dashboards)
+    return await organization.create(api, name, datasources, dashboards, ORG_SWITCH_LOCK)
 
 
 @kopf.on.update('grafana.k8spin.cloud', 'v1', 'organizations')
-def update_organization(old, new, status, **kwargs):
+async def update_organization(old, new, status, **kwargs):
     orgId = status['create_organization']['orgId']
     oldDataSources = old.get('spec').get('datasources', list())
     newDataSources = new.get('spec').get('datasources', list())
     oldDashboards = old.get('spec').get('dashboards', list())
     newDashboards = new.get('spec').get('dashboards', list())
-    organization.update(api, orgId, oldDataSources,
-                        newDataSources, oldDashboards, newDashboards)
+    await organization.update(api, orgId, oldDataSources,
+                              newDataSources, oldDashboards, newDashboards, ORG_SWITCH_LOCK)
 
 
 @kopf.on.delete('grafana.k8spin.cloud', 'v1', 'organizations')

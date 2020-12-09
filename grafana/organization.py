@@ -3,18 +3,42 @@ import json
 from grafana import MAIN_ORG_ID
 
 
-def create(api, name, datasources, dashboards):
+async def create(api, name, datasources, dashboards, lock):
     response = api.organization.create_organization({'name': name})
-    _create_datasources(api, datasources, response.get('orgId'))
-    _create_dashboards(api, dashboards, response.get('orgId'))
+    await lock.acquire()
+    try:
+        _create_datasources(api, datasources, response.get('orgId'))
+    finally:
+        lock.release()
+    await lock.acquire()
+    try:
+        _create_dashboards(api, dashboards, response.get('orgId'))
+    finally:
+        lock.release()
     return response
 
 
-def update(api, orgId, oldDataSources, newDataSources, oldDashboards, newDashboards):
-    _delete_datasources(api, oldDataSources, orgId)
-    _create_datasources(api, newDataSources, orgId)
-    _delete_dashboards(api, oldDashboards, orgId)
-    _create_dashboards(api, newDashboards, orgId)
+async def update(api, orgId, oldDataSources, newDataSources, oldDashboards, newDashboards, lock):
+    await lock.acquire()
+    try:
+        _delete_datasources(api, oldDataSources, orgId)
+    finally:
+        lock.release()
+    await lock.acquire()
+    try:
+        _create_datasources(api, newDataSources, orgId)
+    finally:
+        lock.release()
+    await lock.acquire()
+    try:
+        _delete_dashboards(api, oldDashboards, orgId)
+    finally:
+        lock.release()
+    await lock.acquire()
+    try:
+        _create_dashboards(api, newDashboards, orgId)
+    finally:
+        lock.release()
 
 
 def delete(api, orgId):
