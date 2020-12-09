@@ -1,5 +1,28 @@
+---
 apiVersion: grafana.k8spin.cloud/v1
 kind: Organization
 metadata:
   name: example.com
-spec: {}
+spec:
+  datasources:
+  - name: example
+    data: |
+      {
+        "type": "prometheus",
+        "access": "proxy",
+        "url": "http://prometheus.monitoring:9090"
+      }
+---
+apiVersion: grafana.k8spin.cloud/v1
+kind: Organization
+metadata:
+  name: k8spin
+spec:
+  datasources:
+  - name: k8spin
+    data: |
+      {
+        "type": "prometheus",
+        "access": "proxy",
+        "url": "http://prometheus.monitoring:9090"
+      }
