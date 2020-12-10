@@ -29,6 +29,7 @@ spec:
               x-kubernetes-preserve-unknown-fields: true
             spec:
               type: object
+              required: [jsonDashboard, organizations]
               properties:
                 jsonDashboard:
                   description: Grafana Dashboard in JSON format
