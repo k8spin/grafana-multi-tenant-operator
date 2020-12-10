@@ -192,6 +192,36 @@ Switch to the example.com organization and navigate to datasources:
 
 ![Datasources at example.com organization](../assets/example.com.datasources.png)
 
+
+## Create an Organization Dashboard with a CustomResource
+
+You can alternitively create organization Dashboards using the Dashboard cr. Let's go ahead and create the following example dashboard.
+
+```
+kubectl apply -f examples/example.com-grafana-dashboard.yaml
+```
+
+If you inspect the file, you will see the custom resource is composed of 2 important fields:
+
+* A list of organizations to create the dashboard in
+* The JSON exported dashboard resource
+
+```yaml
+apiVersion: grafana.k8spin.cloud/v1
+kind: Dashboard
+metadata:
+  name: my-fancy-dashboard
+spec:
+  organizations:
+  - example.com
+  jsonDashboard: |-
+    {
+     ...
+    }
+```
+
+You should then see the dashboard populated in the organization folder.
+
 ## Create an example User
 
 Create a User

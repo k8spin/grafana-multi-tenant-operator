@@ -1,3 +1,4 @@
+---
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -14,5 +15,10 @@ spec:
         image: alpine
         command: ["/bin/sh",  "-c"]
         args: ["apk add -q --no-cache curl && curl -s \"http://admin:admin@grafana/api/users?perpage=10\" | grep \"jhon-doe\""]
+      - name: e2e-dashboard
+        image: alpine
+        command: ["/bin/sh",  "-c"]
+        args:
+        - "apk add -q --no-cache jq curl && curl -s 'http://admin:admin@grafana/api/orgs/name/example.com' | jq '.id' | xargs -I {} curl -XPOST -s -o /dev/null 'http://admin:admin@grafana/api/user/using/{}' | curl -XGET -s 'http://admin:admin@grafana/api/search' | jq -r '.[].uid' | grep -q my-fancy-dashboard && test $? -eq 0"
       restartPolicy: Never
   backoffLimit: 4
