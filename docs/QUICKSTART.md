@@ -70,6 +70,7 @@ Deploy the Grafana multi-tenant CRDs:
 
 ```bash
 $ kubectl create -f deploy/crds.yaml
+customresourcedefinition.apiextensions.k8s.io/dashboards.grafana.k8spin.cloud created
 customresourcedefinition.apiextensions.k8s.io/organizations.grafana.k8spin.cloud created
 customresourcedefinition.apiextensions.k8s.io/users.grafana.k8spin.cloud created
 ```

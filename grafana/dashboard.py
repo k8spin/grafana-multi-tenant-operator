@@ -1,27 +1,33 @@
-from grafana import MAIN_ORG_ID, organization, GrafanaClientError
+from grafana import MAIN_ORG_ID, organization, GrafanaException
 
 
 async def create(api, name, jsonDashboard, organizationNames, lock, logger):
     responses = []
-    orgIds = [organization.find_by_name(api, orgName).get('id')
-              for orgName in organizationNames]
+    orgIds = []
+    try:
+        orgIds = [organization.find_by_name(api, orgName).get('id')
+                  for orgName in organizationNames]
+    except GrafanaException as err:
+        logger.error(
+            f'Something went wrong when trying to lookup an organization by name: {err}')
     await lock.acquire()
     try:
         for orgId in orgIds:
-            api.organizations.switch_organization(orgId)
-            jsonDashboard['id'] = None
-            # Setting the uid to the resource name, to be able to find it later
-            jsonDashboard['uid'] = name
-            dashboard_object = {
-                'dashboard': jsonDashboard,
-                'folderId': 0,
-                'overwrite': False
-            }
             try:
+                api.organizations.switch_organization(orgId)
+                jsonDashboard['id'] = None
+                # Setting the uid to the resource name, to be able to find it later
+                jsonDashboard['uid'] = name
+                dashboard_object = {
+                    'dashboard': jsonDashboard,
+                    'folderId': 0,
+                    'overwrite': False
+                }
                 response = api.dashboard.update_dashboard(dashboard_object)
                 responses.append(response)
-            except GrafanaClientError as err:
-                logger.error(err)
+            except GrafanaException as err:
+                logger.error(
+                    f'Unable to create dashboard with name {name} in organization {orgId}: {err}')
         api.organizations.switch_organization(MAIN_ORG_ID)
     finally:
         lock.release()
@@ -33,8 +39,13 @@ async def update(api, name, oldOrganizationNames, newOrganizationNames, newJsonD
     # Delete dashboards from organizations it doesn't belong
     pruneOrgs = [
         item for item in oldOrganizationNames if item not in newOrganizationNames]
-    pruneOrgIds = [organization.find_by_name(api, orgName).get('id')
-                   for orgName in pruneOrgs]
+    pruneOrgIds = []
+    try:
+        pruneOrgIds = [organization.find_by_name(api, orgName).get('id')
+                       for orgName in pruneOrgs]
+    except GrafanaException as err:
+        logger.error(
+            f'Unable to get organization by name in update dashboard: {err}')
     if pruneOrgIds:
         await lock.acquire()
         try:
@@ -42,25 +53,36 @@ async def update(api, name, oldOrganizationNames, newOrganizationNames, newJsonD
                 api.organizations.switch_organization(orgId)
                 try:
                     api.dashboard.delete_dashboard(name)
-                except GrafanaClientError as err:
-                    logger.error(err)
+                except GrafanaException as err:
+                    logger.error(
+                        f'Unable to prune dashboard with uid {name} in organization {orgId}: err')
         finally:
             lock.release()
     # Update dashboards
-    orgIds = [organization.find_by_name(api, orgName).get('id')
-              for orgName in newOrganizationNames]
+    orgIds = []
+    try:
+        orgIds = [organization.find_by_name(api, orgName).get('id')
+                  for orgName in newOrganizationNames]
+    except GrafanaException as err:
+        logger.error(
+            f'Something went wrong when trying to lookup an organization by name: {err}')
     await lock.acquire()
     try:
         for orgId in orgIds:
-            api.organizations.switch_organization(orgId)
+            try:
+                api.organizations.switch_organization(orgId)
+            except GrafanaException as err:
+                logger.error(
+                    f'Unable to switch to organization with id={orgId}: {err}')
             try:
                 api.dashboard.delete_dashboard(name)
-            except GrafanaClientError as err:
+            except GrafanaException as err:
                 if err.status_code == 404:
                     logger.debug(
                         f'Dashboard not found for update. Proceeding to create it in org {orgId}.')
                 else:
-                    logger.error(err)
+                    logger.error(
+                        f'Something went wrong when trying to delete dashboard {name} in org {orgId}: {err}')
             newJsonDashboard['id'] = None
             # Setting the uid to the resource name, to be able to find it later
             newJsonDashboard['uid'] = name
@@ -69,7 +91,12 @@ async def update(api, name, oldOrganizationNames, newOrganizationNames, newJsonD
                 'folderId': 0,
                 'overwrite': False
             }
-            responses.append(api.dashboard.update_dashboard(dashboard_object))
+            try:
+                responses.append(
+                    api.dashboard.update_dashboard(dashboard_object))
+            except GrafanaException as err:
+                logger.error(
+                    f'Something went wrong when trying to create dashboard {name} in org {orgId}: {err}')
         api.organizations.switch_organization(MAIN_ORG_ID)
     finally:
         lock.release()
@@ -78,16 +105,22 @@ async def update(api, name, oldOrganizationNames, newOrganizationNames, newJsonD
 
 async def delete(api, name, organizationNames, lock, logger):
     responses = []
-    orgIds = [organization.find_by_name(api, orgName).get('id')
-              for orgName in organizationNames]
+    orgIds = []
+    try:
+        orgIds = [organization.find_by_name(api, orgName).get('id')
+                  for orgName in organizationNames]
+    except GrafanaException as err:
+        logger.error(
+            f'Something went wrong when trying to lookup an organization by name: {err}')
     await lock.acquire()
     try:
         for orgId in orgIds:
-            api.organizations.switch_organization(orgId)
             try:
-                api.dashboard.delete_dashboard(name)
-            except GrafanaClientError as err:
-                logger.error(err)
+                api.organizations.switch_organization(orgId)
+                responses.append(api.dashboard.delete_dashboard(name))
+            except GrafanaException as err:
+                logger.error(
+                    f'Unable to delete the dashboard with name {name} in organization {orgId}: {err}')
         api.organizations.switch_organization(MAIN_ORG_ID)
     finally:
         lock.release()

@@ -1,7 +1,7 @@
 import os
 
 from grafana_api.grafana_face import GrafanaFace
-from grafana_api.grafana_api import GrafanaClientError
+from grafana_api.grafana_api import GrafanaException
 
 MAIN_ORG_ID = 1
 
