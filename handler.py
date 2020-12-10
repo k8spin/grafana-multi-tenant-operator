@@ -62,24 +62,24 @@ def delete_user(status, **kwargs):
 
 
 @kopf.on.create('grafana.k8spin.cloud', 'v1', 'dashboards')
-def create_dashboard(spec, meta, **kwargs):
+async def create_dashboard(spec, meta, logger, **kwargs):
     name = meta.get('name')
     jsonDashboard = json.loads(spec.get('jsonDashboard'))
     organizationNames = spec.get('organizations', list())
-    return dashboard.create(api, name, jsonDashboard, organizationNames)
+    return await dashboard.create(api, name, jsonDashboard, organizationNames, ORG_SWITCH_LOCK, logger)
 
 
 @kopf.on.update('grafana.k8spin.cloud', 'v1', 'dashboards')
-def update_dashboard(status, spec, meta, old, new, **kwargs):
+async def update_dashboard(status, spec, meta, old, new, logger, **kwargs):
     name = meta.get('name')
     oldOrganizationNames = old.get('spec').get('organizations', list())
     newOrganizationNames = new.get('spec').get('organizations', list())
     newJsonDashboard = json.loads(new.get('spec').get('jsonDashboard'))
-    return dashboard.update(api, name, oldOrganizationNames, newOrganizationNames, newJsonDashboard)
+    return await dashboard.update(api, name, oldOrganizationNames, newOrganizationNames, newJsonDashboard, ORG_SWITCH_LOCK, logger)
 
 
 @kopf.on.delete('grafana.k8spin.cloud', 'v1', 'dashboards')
-def delete_dashboard(spec, meta, **kwargs):
+async def delete_dashboard(spec, meta, logger, **kwargs):
     organizationNames = spec.get('organizations', list())
     name = meta.get('name')
-    return dashboard.delete(api, name, organizationNames)
+    return await dashboard.delete(api, name, organizationNames, ORG_SWITCH_LOCK, logger)
