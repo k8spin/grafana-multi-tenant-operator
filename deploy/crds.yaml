@@ -151,11 +151,17 @@ spec:
               x-kubernetes-preserve-unknown-fields: true
             spec:
               type: object
-              required: [jsonDashboard, organizations]
+              required: [dashboard, organizations]
               properties:
-                jsonDashboard:
+                dashboard:
+                  type: object
                   description: Grafana Dashboard in JSON format
-                  type: string
+                  required: [name, data]
+                  properties:
+                    name:
+                      type: string
+                    data:
+                      type: string
                 organizations:
                   description: Grafana Organizations the dashboard belongs to
                   type: array

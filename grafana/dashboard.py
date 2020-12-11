@@ -34,7 +34,7 @@ async def create(api, name, jsonDashboard, organizationNames, lock, logger):
     return responses
 
 
-async def update(api, name, oldOrganizationNames, newOrganizationNames, newJsonDashboard, lock, logger):
+async def update(api, oldName, newName, oldOrganizationNames, newOrganizationNames, jsonDashboard, lock, logger):
     responses = []
     # Delete dashboards from organizations it doesn't belong
     pruneOrgs = [
@@ -52,10 +52,10 @@ async def update(api, name, oldOrganizationNames, newOrganizationNames, newJsonD
             for orgId in pruneOrgIds:
                 api.organizations.switch_organization(orgId)
                 try:
-                    api.dashboard.delete_dashboard(name)
+                    api.dashboard.delete_dashboard(oldName)
                 except GrafanaException as err:
                     logger.error(
-                        f'Unable to prune dashboard with uid {name} in organization {orgId}: err')
+                        f'Unable to prune dashboard with uid {oldName} in organization {orgId}: err')
         finally:
             lock.release()
     # Update dashboards
@@ -75,19 +75,19 @@ async def update(api, name, oldOrganizationNames, newOrganizationNames, newJsonD
                 logger.error(
                     f'Unable to switch to organization with id={orgId}: {err}')
             try:
-                api.dashboard.delete_dashboard(name)
+                api.dashboard.delete_dashboard(oldName)
             except GrafanaException as err:
                 if err.status_code == 404:
                     logger.debug(
                         f'Dashboard not found for update. Proceeding to create it in org {orgId}.')
                 else:
                     logger.error(
-                        f'Something went wrong when trying to delete dashboard {name} in org {orgId}: {err}')
-            newJsonDashboard['id'] = None
+                        f'Something went wrong when trying to delete dashboard {oldName} in org {orgId}: {err}')
+            jsonDashboard['id'] = None
             # Setting the uid to the resource name, to be able to find it later
-            newJsonDashboard['uid'] = name
+            jsonDashboard['uid'] = newName
             dashboard_object = {
-                'dashboard': newJsonDashboard,
+                'dashboard': jsonDashboard,
                 'folderId': 0,
                 'overwrite': False
             }
@@ -96,7 +96,7 @@ async def update(api, name, oldOrganizationNames, newOrganizationNames, newJsonD
                     api.dashboard.update_dashboard(dashboard_object))
             except GrafanaException as err:
                 logger.error(
-                    f'Something went wrong when trying to create dashboard {name} in org {orgId}: {err}')
+                    f'Something went wrong when trying to create dashboard {newName} in org {orgId}: {err}')
         api.organizations.switch_organization(MAIN_ORG_ID)
     finally:
         lock.release()
