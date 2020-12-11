@@ -215,10 +215,12 @@ metadata:
 spec:
   organizations:
   - example.com
-  jsonDashboard: |-
-    {
-     ...
-    }
+  dashboard:
+    name: my-dashboard
+    data: |-
+      {
+      ...
+      }
 ```
 
 You should then see the dashboard populated in the organization folder.
