@@ -62,32 +62,33 @@ def delete_user(status, **kwargs):
 
 
 @kopf.on.create('grafana.k8spin.cloud', 'v1', 'dashboards')
-async def create_dashboard(spec, meta, logger, **kwargs):
-    name = meta.get('name')
-    jsonDashboard = json.loads(spec.get('jsonDashboard'))
+async def create_dashboard(spec, logger, **kwargs):
+    name = spec.get('dashboard').get('name')
+    dash = json.loads(spec.get('dashboard').get('data'))
     organizationNames = spec.get('organizations', list())
-    responses = await dashboard.create(api, name, jsonDashboard, organizationNames, ORG_SWITCH_LOCK, logger)
+    responses = await dashboard.create(api, name, dash, organizationNames, ORG_SWITCH_LOCK, logger)
     if not responses:
         raise kopf.TemporaryError("Could not create dashboard yet.", delay=10)
     return responses
 
 
 @kopf.on.update('grafana.k8spin.cloud', 'v1', 'dashboards')
-async def update_dashboard(status, spec, meta, old, new, logger, **kwargs):
-    name = meta.get('name')
+async def update_dashboard(status, old, new, logger, **kwargs):
+    oldName = old.get('spec').get('dashboard').get('name')
+    newName = new.get('spec').get('dashboard').get('name')
     oldOrganizationNames = old.get('spec').get('organizations', list())
     newOrganizationNames = new.get('spec').get('organizations', list())
-    newJsonDashboard = json.loads(new.get('spec').get('jsonDashboard'))
-    responses = await dashboard.update(api, name, oldOrganizationNames, newOrganizationNames, newJsonDashboard, ORG_SWITCH_LOCK, logger)
+    newDashboard = json.loads(new.get('spec').get('dashboard').get('data'))
+    responses = await dashboard.update(api, oldName, newName, oldOrganizationNames, newOrganizationNames, newDashboard, ORG_SWITCH_LOCK, logger)
     if not responses:
         raise kopf.TemporaryError("Could not update dashboard yet.", delay=10)
     return responses
 
 
 @kopf.on.delete('grafana.k8spin.cloud', 'v1', 'dashboards')
-async def delete_dashboard(spec, meta, logger, **kwargs):
+async def delete_dashboard(spec, logger, **kwargs):
+    name = spec.get('dashboard').get('name')
     organizationNames = spec.get('organizations', list())
-    name = meta.get('name')
     responses = await dashboard.delete(api, name, organizationNames, ORG_SWITCH_LOCK, logger)
     if not responses:
         raise kopf.TemporaryError("Could not delete dashboard yet.", delay=10)
