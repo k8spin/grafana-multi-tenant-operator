@@ -196,7 +196,7 @@ Switch to the example.com organization and navigate to datasources:
 
 ## Create an Organization Dashboard with a CustomResource
 
-You can alternitively create organization Dashboards using the Dashboard cr. Let's go ahead and create the following example dashboard.
+You can alternatively create organization Dashboards using the Dashboard cr. Let's go ahead and create the following example dashboard.
 
 ```
 kubectl apply -f examples/example.com-grafana-dashboard.yaml

@@ -22,7 +22,7 @@ Read the [CONTRIBUTING.md](CONTRIBUTING.md) to know how you can contribute to th
 
 ### Development
 
-If you want to contribute to this project, take a look to the [development notes](docs/DEVELOPMENT.md).
+If you want to contribute to this project, take a look at the [development notes](docs/DEVELOPMENT.md).
 
 
 ## License
