@@ -1,4 +1,4 @@
-from grafana import MAIN_ORG_ID, organization, GrafanaException
+from grafana import MAIN_ORG_ID, GrafanaException, organization
 
 
 async def create(api, name, jsonDashboard, organizationNames, lock, logger):

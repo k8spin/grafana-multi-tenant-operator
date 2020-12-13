@@ -1,9 +1,9 @@
+import asyncio
 import json
 
-import asyncio
 import kopf
 
-from grafana import api, organization, user, dashboard
+from grafana import api, dashboard, organization, user
 
 ORG_SWITCH_LOCK: asyncio.Lock
 
