@@ -15,9 +15,9 @@ async def create(api, name, jsonDashboard, organizationNames, lock, logger):
         for orgId in orgIds:
             try:
                 api.organizations.switch_organization(orgId)
-                jsonDashboard['id'] = None
-                # Setting the uid to the resource name, to be able to find it later
                 jsonDashboard['uid'] = name
+                jsonDashboard['title'] = name
+                del jsonDashboard['id']
                 dashboard_object = {
                     'dashboard': jsonDashboard,
                     'folderId': 0,
