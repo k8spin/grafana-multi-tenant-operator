@@ -6,7 +6,7 @@
 ## Overview
 
 This operator provides basic but powerful capabilities to create Grafana Organizations and Users.
-Built with [kopf](https://github.com/zalando-incubator/kopf)
+Built with [kopf](https://github.com/nolar/kopf)
 
 
 ## Quickstart
