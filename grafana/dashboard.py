@@ -1,7 +1,7 @@
 from grafana import MAIN_ORG_ID, GrafanaException, organization
 
 
-async def create(api, name, jsonDashboard, organizationNames, lock, logger):
+async def create(api, name, title, jsonDashboard, organizationNames, lock, logger):
     responses = []
     orgIds = []
     try:
@@ -16,7 +16,7 @@ async def create(api, name, jsonDashboard, organizationNames, lock, logger):
             try:
                 api.organizations.switch_organization(orgId)
                 jsonDashboard['uid'] = name
-                jsonDashboard['title'] = name
+                jsonDashboard['title'] = title if title else name
                 del jsonDashboard['id']
                 dashboard_object = {
                     'dashboard': jsonDashboard,
@@ -34,7 +34,7 @@ async def create(api, name, jsonDashboard, organizationNames, lock, logger):
     return responses
 
 
-async def update(api, oldName, newName, oldOrganizationNames, newOrganizationNames, jsonDashboard, lock, logger):
+async def update(api, oldName, newName, newTitle, oldOrganizationNames, newOrganizationNames, jsonDashboard, lock, logger):
     responses = []
     # Delete dashboards from organizations it doesn't belong
     pruneOrgs = [
@@ -86,6 +86,7 @@ async def update(api, oldName, newName, oldOrganizationNames, newOrganizationNam
             jsonDashboard['id'] = None
             # Setting the uid to the resource name, to be able to find it later
             jsonDashboard['uid'] = newName
+            jsonDashboard['title'] = newTitle if newTitle else newName
             dashboard_object = {
                 'dashboard': jsonDashboard,
                 'folderId': 0,

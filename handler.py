@@ -64,9 +64,10 @@ def delete_user(status, **kwargs):
 @kopf.on.create('grafana.k8spin.cloud', 'v1', 'dashboards')
 async def create_dashboard(spec, logger, **kwargs):
     name = spec.get('dashboard').get('name')
+    title = spec.get('dashboard').get('title')
     dash = json.loads(spec.get('dashboard').get('data'))
     organizationNames = spec.get('organizations', list())
-    responses = await dashboard.create(api, name, dash, organizationNames, ORG_SWITCH_LOCK, logger)
+    responses = await dashboard.create(api, name, title, dash, organizationNames, ORG_SWITCH_LOCK, logger)
     if not responses:
         raise kopf.TemporaryError("Could not create dashboard yet.", delay=10)
     return responses
@@ -76,10 +77,11 @@ async def create_dashboard(spec, logger, **kwargs):
 async def update_dashboard(status, old, new, logger, **kwargs):
     oldName = old.get('spec').get('dashboard').get('name')
     newName = new.get('spec').get('dashboard').get('name')
+    newTitle = new.get('spec').get('dashboard').get('title')
     oldOrganizationNames = old.get('spec').get('organizations', list())
     newOrganizationNames = new.get('spec').get('organizations', list())
     newDashboard = json.loads(new.get('spec').get('dashboard').get('data'))
-    responses = await dashboard.update(api, oldName, newName, oldOrganizationNames, newOrganizationNames, newDashboard, ORG_SWITCH_LOCK, logger)
+    responses = await dashboard.update(api, oldName, newName, newTitle, oldOrganizationNames, newOrganizationNames, newDashboard, ORG_SWITCH_LOCK, logger)
     if not responses:
         raise kopf.TemporaryError("Could not update dashboard yet.", delay=10)
     return responses

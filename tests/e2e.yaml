@@ -20,5 +20,10 @@ spec:
         command: ["/bin/sh",  "-c"]
         args:
         - "apk add -q --no-cache jq curl && curl -s 'http://admin:admin@grafana/api/orgs/name/example.com' | jq '.id' | xargs -I {} curl -XPOST -s -o /dev/null 'http://admin:admin@grafana/api/user/using/{}' | curl -XGET -s 'http://admin:admin@grafana/api/search' | jq -r '.[].uid' | grep -q unique-dashboard-name && test $? -eq 0"
+      - name: e2e-dashboard-with-title
+        image: alpine
+        command: ["/bin/sh",  "-c"]
+        args:
+        - "apk add -q --no-cache jq curl && curl -s 'http://admin:admin@grafana/api/orgs/name/example.com' | jq '.id' | xargs -I {} curl -XPOST -s -o /dev/null 'http://admin:admin@grafana/api/user/using/{}' | curl -XGET -s 'http://admin:admin@grafana/api/search' | jq -r '.[].title' | grep -q 'Best Dashboard in the World' && test $? -eq 0"
       restartPolicy: Never
   backoffLimit: 25 # Higher value here instead of adding waits in the pipeline
