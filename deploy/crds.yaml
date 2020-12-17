@@ -160,6 +160,8 @@ spec:
                   properties:
                     name:
                       type: string
+                    title:
+                      type: string
                     data:
                       type: string
                 organizations:
