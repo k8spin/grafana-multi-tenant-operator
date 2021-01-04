@@ -5,6 +5,7 @@ metadata:
 spec:
   organizations:
   - example.com
+  - k8spin
   dashboard:
     name: my-other-unique-dashboard
     title: "Best Dashboard in the World"

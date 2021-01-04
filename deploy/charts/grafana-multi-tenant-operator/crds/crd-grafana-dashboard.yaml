@@ -48,7 +48,7 @@ spec:
                   items:
                     type: string
       additionalPrinterColumns:
-      - jsonPath: .spec.organizations[*]
+      - jsonPath: .spec.organizations
         name: Organizations
         type: string
   names:

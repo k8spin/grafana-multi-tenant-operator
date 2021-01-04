@@ -4,7 +4,8 @@ metadata:
   name: example-prom-datasource
 spec:
   organizations:
-  - great-customer-org
+  - example.com
+  - k8spin
   datasource:
     name: "Example Prometheus Datasource"
     data: |-
