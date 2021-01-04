@@ -1,0 +1,35 @@
+apiVersion: grafana.k8spin.cloud/v1
+kind: Datasource
+metadata:
+  name: example-graphite-test
+spec:
+  organizations:
+  - example.com
+  - great-customer-org
+  datasource:
+    name: graphite-test
+    data: |-
+      {
+        "id": 1,
+        "orgId": 1,
+        "name": "test_datasource",
+        "type": "graphite",
+        "typeLogoUrl": "",
+        "access": "proxy",
+        "url": "http://mydatasource.test",
+        "password": "",
+        "user": "",
+        "database": "",
+        "basicAuth": false,
+        "basicAuthUser": "",
+        "basicAuthPassword": "",
+        "withCredentials": false,
+        "isDefault": false,
+        "jsonData": {
+          "graphiteType": "default",
+          "graphiteVersion": "1.1"
+        },
+        "secureJsonFields": {},
+        "version": 1,
+        "readOnly": false
+      }

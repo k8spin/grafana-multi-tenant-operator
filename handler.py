@@ -3,7 +3,7 @@ import json
 
 import kopf
 
-from grafana import api, dashboard, organization, user
+from grafana import api, dashboard, datasource, organization, user
 
 ORG_SWITCH_LOCK: asyncio.Lock
 
@@ -94,4 +94,38 @@ async def delete_dashboard(spec, logger, **kwargs):
     responses = await dashboard.delete(api, name, organizationNames, ORG_SWITCH_LOCK, logger)
     if not responses:
         raise kopf.TemporaryError("Could not delete dashboard yet.", delay=10)
+    return responses
+
+
+@kopf.on.create('grafana.k8spin.cloud', 'v1', 'datasources')
+async def create_datasource(spec, logger, **kwargs):
+    name = spec.get('datasource').get('name')
+    ds = json.loads(spec.get('datasource').get('data'))
+    organizationNames = spec.get('organizations', list())
+    responses = await datasource.create(api, name, ds, organizationNames, ORG_SWITCH_LOCK, logger)
+    if not responses:
+        raise kopf.TemporaryError("Could not create datasource yet.", delay=10)
+    return responses
+
+
+@kopf.on.update('grafana.k8spin.cloud', 'v1', 'datasources')
+async def update_datasource(status, old, new, logger, **kwargs):
+    oldName = old.get('spec').get('datasource').get('name')
+    newName = new.get('spec').get('datasource').get('name')
+    newDs = json.loads(new.get('spec').get('datasource').get('data'))
+    oldOrganizationNames = old.get('spec').get('organizations', list())
+    newOrganizationNames = new.get('spec').get('organizations', list())
+    responses = await datasource.update(api, oldName, newName, newDs, oldOrganizationNames, newOrganizationNames, ORG_SWITCH_LOCK, logger)
+    if not responses:
+        raise kopf.TemporaryError("Could not update datasource yet.", delay=10)
+    return responses
+
+
+@kopf.on.delete('grafana.k8spin.cloud', 'v1', 'datasources')
+async def delete_datasource(spec, logger, **kwargs):
+    name = spec.get('datasource').get('name')
+    organizationNames = spec.get('organizations', list())
+    responses = await datasource.delete(api, name, organizationNames, ORG_SWITCH_LOCK, logger)
+    if not responses:
+        raise kopf.TemporaryError("Could not delete datasource yet.", delay=10)
     return responses

@@ -1,0 +1,15 @@
+apiVersion: grafana.k8spin.cloud/v1
+kind: Datasource
+metadata:
+  name: example-prom-datasource
+spec:
+  organizations:
+  - great-customer-org
+  datasource:
+    name: "Example Prometheus Datasource"
+    data: |-
+      {
+        "type": "prometheus",
+        "access": "proxy",
+        "url": "http://prometheus.monitoring:9090"
+      }
