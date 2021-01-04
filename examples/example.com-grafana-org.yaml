@@ -26,8 +26,3 @@ spec:
         "access": "proxy",
         "url": "http://prometheus.monitoring:9090"
       }
----
-apiVersion: grafana.k8spin.cloud/v1
-kind: Organization
-metadata:
-  name: great-customer-org
