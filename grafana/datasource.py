@@ -31,7 +31,7 @@ async def create(api, name, jsonDatasource, organizationNames, lock, logger):
 
 async def update(api, oldName, newName, newJsonDatasource, oldOrganizationNames, newOrganizationNames, lock, logger):
     responses = []
-    # Delete dashboards from organizations it doesn't belong
+    # Delete the datasource from organizations it doesn't belong
     pruneOrgs = [
         item for item in oldOrganizationNames if item not in newOrganizationNames]
     pruneOrgIds = []
@@ -80,7 +80,7 @@ async def update(api, oldName, newName, newJsonDatasource, oldOrganizationNames,
                 responses.append(response)
             except GrafanaException as err:
                 logger.error(
-                    f'Unable to create datasource with name {newName} in organization {orgId}: {err}\nTried to create this datasource: {newJsonDatasource}')
+                    f'Unable to create datasource with name {newName} in organization {orgId}: {err}')
         api.organizations.switch_organization(MAIN_ORG_ID)
     finally:
         lock.release()
