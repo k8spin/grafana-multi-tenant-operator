@@ -198,7 +198,7 @@ Switch to the example.com organization and navigate to datasources:
 ![Datasources at example.com organization](../assets/example.com.datasources.png)
 
 
-## Create an Organization Datasource with a CustomeResource
+## Create an Organization Datasource with a CustomResource
 
 You can create organization Datasources using the Datasource custom resource (cr). You can deploy a sample Prometheus datasource for the previously created org using one of the example files.
 
