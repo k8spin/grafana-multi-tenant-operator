@@ -17,7 +17,7 @@ async def create(api, name, jsonDatasource, organizationNames, lock, logger):
                 api.organizations.switch_organization(orgId)
                 jsonDatasource['name'] = name
                 if jsonDatasource.get('id'):
-                    del jsonDatasource['id']
+                    jsonDatasource.pop('id', None)
                 response = api.datasource.create_datasource(jsonDatasource)
                 responses.append(response)
             except GrafanaException as err:
@@ -75,7 +75,7 @@ async def update(api, oldName, newName, newJsonDatasource, oldOrganizationNames,
             try:
                 newJsonDatasource['name'] = newName
                 if newJsonDatasource.get('id'):
-                    del newJsonDatasource['id']
+                    newJsonDatasource.pop('id', None)
                 response = api.datasource.create_datasource(newJsonDatasource)
                 responses.append(response)
             except GrafanaException as err:
