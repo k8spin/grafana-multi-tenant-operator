@@ -17,7 +17,7 @@ async def create(api, name, title, jsonDashboard, organizationNames, lock, logge
                 api.organizations.switch_organization(orgId)
                 jsonDashboard['uid'] = name
                 jsonDashboard['title'] = title if title else name
-                del jsonDashboard['id']
+                jsonDashboard.pop('id', None)
                 dashboard_object = {
                     'dashboard': jsonDashboard,
                     'folderId': 0,

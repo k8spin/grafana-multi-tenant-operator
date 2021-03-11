@@ -68,7 +68,7 @@ def _create_dashboards(api, dashboards, orgId):
         # Override the uid and title
         dashboardParsed['uid'] = dashboardName
         dashboardParsed['title'] = dashboardName
-        del dashboardParsed['id']
+        dashboardParsed.pop('id', None)
         dashboard_object = {
             'dashboard': dashboardParsed,
             'folderId': 0,
