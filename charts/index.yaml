@@ -3,9 +3,9 @@ entries:
   grafana-multi-tenant-operator:
   - apiVersion: v2
     appVersion: v1.3.1
-    created: "2021-03-11T17:39:24.083213341Z"
+    created: "2021-08-21T10:50:11.294189029Z"
     description: A Helm chart for the Grafana Multi Tenant Operator by K8Spin.
-    digest: 09131f08d7b30b9b3fcd75092dd20ea37c25d68fba7d0467d9cdeec2711c9042
+    digest: d0833c055c7d50b5639473aa799858655be8b7bc81110671d63462b692938a36
     name: grafana-multi-tenant-operator
     type: application
     urls:
@@ -71,4 +71,4 @@ entries:
     urls:
     - https://k8spin.github.io/grafana-multi-tenant-operator/charts/grafana-multi-tenant-operator-0.1.0.tgz
     version: 0.1.0
-generated: "2021-03-11T17:39:24.079363639Z"
+generated: "2021-08-21T10:50:11.293641797Z"
