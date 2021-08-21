@@ -32,7 +32,7 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command: ["/bin/bash"]
-          args: ["-c", "kopf run /src/handler.py --verbose --namespace=${NAMESPACE}"]
+          args: ["-c", "kopf run /src/handler.py --verbose --namespace=${NAMESPACE} --log-format full"]
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           envFrom:
