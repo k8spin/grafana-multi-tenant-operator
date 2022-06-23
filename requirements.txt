@@ -1,2 +1,2 @@
 grafana-api==1.0.3
-kopf==1.35.2
+kopf==1.35.5
