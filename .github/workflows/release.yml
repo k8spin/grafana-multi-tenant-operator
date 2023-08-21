@@ -32,7 +32,7 @@ jobs:
         run: kind load docker-image ghcr.io/${{ github.repository }}:e2e
 
       - name: Install helm
-        uses: azure/setup-helm@v1
+        uses: azure/setup-helm@v3
         with:
           version: "3.6.3"
         id: helm_install
