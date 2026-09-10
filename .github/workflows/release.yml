@@ -34,7 +34,7 @@ jobs:
       - name: Install helm
         uses: azure/setup-helm@v1
         with:
-          version: "3.6.3"
+          version: "4.3.0"
         id: helm_install
       - name: Install Grafana Helm Repository
         run: "${{ steps.helm_install.outputs.helm-path }} repo add grafana https://grafana.github.io/helm-charts --force-update"
